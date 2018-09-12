@@ -86,8 +86,8 @@ router.put('/:movie_id', (req, res, next) => {
 
 router.post('/', function (req, res, next) {
   // const {title,category,country,year,point,date}=req.body; //post ile gönderilen datayı aldık
-  const movie = new MovieModel(req.body // kısa yolu tek tek yerine 
-  );
+  const movie = new MovieModel(req.body );// kısa yolu tek tek yerine 
+  
   movie.save()
     .then((data) => {
       res.json(data);

@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+
 const indexRouter = require('./routes/index');
 const movieRouter = require('./routes/movie');
 const directorRouter=require('./routes/director');
@@ -12,6 +13,9 @@ const app = express();
 //Db connect
 const db=require('./helper/db');
 db();
+// config
+const config =require('./config');
+app.set('api_secret_key',config.api_secret_key);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
