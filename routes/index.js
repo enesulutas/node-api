@@ -46,14 +46,9 @@ router.post('/auth', (req, res) => {
       });
     }
     else {
-      bcrypt.compare(password, user.password).then((result) => {
-        if (!result) {
-          res.json({
-            status: false,
-            message: 'yanlış parola'
-          });
-        }
-        else {
+      const promise=bcrypt.compare(password, user.password);
+      promise.then((result) => {
+        if (result) {
           const payload = {
             username
           };
@@ -64,10 +59,18 @@ router.post('/auth', (req, res) => {
           res.json({
             status: true,
             token: token
-          });
+          })
         }
-      });
-
+        else {
+          res.json({
+            status: false,
+            message: 'yanlış parola'
+          });
+        
+        }
+      }).catch((err)=>{
+        res.json("hata");
+      })
     }
   });
 });
