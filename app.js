@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-
+//Router
 const indexRouter = require('./routes/index');
 const movieRouter = require('./routes/movie');
 const directorRouter=require('./routes/director');
@@ -17,6 +17,10 @@ db();
 const config =require('./config');
 app.set('api_secret_key',config.api_secret_key);
 
+//Middleware
+const verifytoken = require('./middleware/verifytoken.js');
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -28,6 +32,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/api',verifytoken); // api linkinin altındakinin hepsinde token middlewaresi kullanılacak
 app.use('/api/movies', movieRouter);
 app.use('/api/director',directorRouter);
 
