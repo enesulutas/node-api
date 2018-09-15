@@ -65,7 +65,7 @@ describe('/api/movies tests',()=>{    // ne testi olduğunu belirttik
        });
    });
 
-   describe('/GET/:director_id_movie',()=>{
+   describe('/GET/:movie_id_movie',()=>{
        it('verilen id ile filmi getirmeli',(done)=>{
            chai.request(server)
            .get('/api/movies/'+movieID)
@@ -83,7 +83,54 @@ describe('/api/movies tests',()=>{    // ne testi olduğunu belirttik
                 done();
 
 
-           })
-       })
-   })
+           });
+       });
+   });
+
+   describe('/PUT/:movie_id movie', () => {
+    it('bir film update etmeli', (done) => {
+        const movie = {
+            title: '93creatisssve',
+            director_id: '5a34e1afb8523a78631f8541',
+            category: 'Suç',
+            country: 'Fransa',
+            year: 1970,
+            point: 9
+        };
+
+        chai.request(server)
+            .put('/api/movies/'+movieID)
+            .send(movie)
+            .set('x-access-token', token)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('title').eql(movie.title);
+                res.body.should.have.property('director_id').eql(movie.director_id);
+                res.body.should.have.property('category').eql(movie.category);
+                res.body.should.have.property('country').eql(movie.country);
+                res.body.should.have.property('year').eql(movie.year);
+                res.body.should.have.property('point').eql(movie.point);
+
+                done();
+            });
+    });
+});
+
+
+describe('/Delete/:movie_id movie', () => {
+    it('bir film delete etmeli', (done) => {
+       
+        chai.request(server)
+            .delete('/api/movies/'+movieID)
+            .send(movie)
+            .set('x-access-token', token)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').eql(1);
+                done();
+            });
+    });
+});
 });
